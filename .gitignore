@@ -1,8 +1,0 @@
-node_modules/
-.DS_Store
-ida/
-backup/
-debug/
-*.zip
-*.log
-__pycache__/
