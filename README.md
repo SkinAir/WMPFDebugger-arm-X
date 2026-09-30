@@ -4,9 +4,9 @@
 
 fork 自 [chain00x/WMPFDebugger-arm](https://github.com/chain00x/WMPFDebugger-arm)（原始项目 [evi0s/WMPFDebugger](https://github.com/evi0s/WMPFDebugger)）。
 
-## ⚠️ 4.1.15 变了什么
+## ⚠️ 4.1.15 变动
 
-微信 4.1.15 **整体更换了小程序调试的传输机制**，老版本工具（WMPFDebugger 等）全部失效，表现为「调试端口一直找不到 / 连不上」：
+微信 4.1.15 **整体更换了小程序调试的传输机制**，老版本（WMPFDebugger 等）失效，表现为「调试端口一直找不到 / 连不上」：
 
 | | ≤ 4.1.13（旧版） | 4.1.15（本仓库适配） |
 |---|---|---|
