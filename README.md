@@ -1,12 +1,12 @@
 # WMPFDebugger-arm-X
 
-微信小程序 macOS (arm64) 远程调试，支持微信 4.1.15.22。
+微信小程序 macOS (arm64) 远程调试，支持微信 4.1.15。
 
 fork 自 [chain00x/WMPFDebugger-arm](https://github.com/chain00x/WMPFDebugger-arm)（原始项目 [evi0s/WMPFDebugger](https://github.com/evi0s/WMPFDebugger)）。
 
-## ⚠️ 4.1.15 变动
+## ⚠️ 4.1.15 变了什么
 
-微信 4.1.15.22 **整体更换了小程序调试的传输机制**，老版本（WMPFDebugger 等）失效，表现为「调试端口一直找不到 / 连不上」：
+微信 4.1.15 **整体更换了小程序调试的传输机制**，老版本工具（WMPFDebugger 等）全部失效，表现为「调试端口一直找不到 / 连不上」：
 
 | | ≤ 4.1.13（旧版） | 4.1.15（本仓库适配） |
 |---|---|---|
@@ -55,7 +55,11 @@ sudo python3 tools/step_resign_keep_ents.py
  Frida 注入（每次启动微信挂一次就行）：
 
 ```bash
-npx ts-node src/inject.ts
+# 微信 4.2.0 (build 270348)
+npx ts-node src/inject.ts --script frida/270348.js
+
+# 微信 4.1.15 (build 270102)
+npx ts-node src/inject.ts --script frida/270102_relay.js
 ```
 
 再开 relay（这个随便重启）：
@@ -79,10 +83,24 @@ Console / Sources / Network 都能用，可以直接跑 `wx.*`。
 
 ## 版本
 
-| 微信版本 | 用法 |
-|----------|------|
-| 4.1.15 (270102) | `src/inject.ts` + `src/relay.ts` |
-| ≤ 4.1.13 | `src/index.ts --script frida/<build>.js`（旧 protobuf 模式，偏移需自备） |
+| 微信版本 | 框架版本 | Frida 脚本 |
+|----------|----------|-----------|
+| 4.2.0 (270348) | 8.26062 | `frida/270348.js` |
+| 4.1.15 (270135) | 7.25800 | `frida/270135.js` |
+| 4.1.15 (270102) | 7.25755 | `frida/270102_relay.js` |
+| ≤ 4.1.13 | — | `src/index.ts --script frida/<build>.js`（旧 protobuf 模式） |
+
+> 4.2.0 里 Framework 从 `Contents/Frameworks/` 挪到了 `Contents/Resources/`，且 scene 结构体偏移变了（StructOffset 1520→1552，SceneOffset 456→480）。inject/relay 代码不受影响，只换 frida 脚本。
+
+## 暂停微信自动更新
+
+微信每 5 分钟自动查一次更新，更新完会重置签名 + 换偏移，又要重新适配。想锁住当前版本：
+
+```bash
+python3 tools/wechat_update_guard.py off    # 关自动更新（手动“检查更新”仍可用）
+python3 tools/wechat_update_guard.py on     # 想更新时再打开
+python3 tools/wechat_update_guard.py status # 看状态
+```
 
 ## 注意
 
