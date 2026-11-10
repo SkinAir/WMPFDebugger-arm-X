@@ -75,9 +75,17 @@ def off(soft=False):
         os.makedirs(SPARKLE_CACHE, exist_ok=True)
         if lock(SPARKLE_CACHE, True):
             print(f"[guard] locked {SPARKLE_CACHE}")
+    # also lock the plist so WeChat cannot re-enable updates
+    try:
+        subprocess.run(["chflags", "uchg", PLIST], check=True)
+        print(f"[guard] locked {PLIST}")
+    except Exception as e:
+        print(f"[guard] warning: could not lock plist: {e}")
     print("[guard] restart WeChat to apply")
 
 def on():
+    # unlock plist first so we can write
+    subprocess.run(["chflags", "nouchg", PLIST], capture_output=True)
     defaults_write("SUEnableAutomaticChecks", "true")
     print("[guard] Sparkle automatic checks re-enabled")
     if os.path.exists(SPARKLE_CACHE):
