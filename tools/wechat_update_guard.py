@@ -21,14 +21,16 @@ Usage:
   python3 wechat_update_guard.py on              # re-enable (undo both)
   python3 wechat_update_guard.py --soft-off      # L1 only (no file lock)
 
-Note: L1 writes to ~/Library/Preferences/com.tencent.xinWeChat.plist as the
-current user — no sudo needed. L2 also runs as the user. Restart WeChat to apply.
+Note: L1 writes to the CONTAINER plist
+(~/Library/Containers/com.tencent.xinWeChat/Data/Library/Preferences/...)
+— this is what actually matters. Restart WeChat to apply.
 """
 import os
 import subprocess
 import sys
 
-PLIST = os.path.expanduser("~/Library/Preferences/com.tencent.xinWeChat.plist")
+PLIST = os.path.expanduser(
+    "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Preferences/com.tencent.xinWeChat.plist")
 SPARKLE_CACHE = os.path.expanduser(
     "~/Library/Caches/com.tencent.xinWeChat/org.sparkle-project.Sparkle")
 
