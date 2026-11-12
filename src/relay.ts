@@ -247,7 +247,14 @@ const handleTargetConnection = (ws: WebSocket, url: string) => {
         console.log(`[relay] target disconnected - code: ${code}, reason: ${reason.toString()}`);
         if (targetSocket === ws) targetSocket = null;
         attachedTargetId = null;
-        // try to re-attach on next target list push
+        // auto re-attach: WeChat closes idle target connections (code 1001/1006);
+        // re-send XWeb.inspect so the framework re-opens the channel without
+        // requiring the user to restart the mini program.
+        const wanted = pickTarget();
+        if (wanted) {
+            console.log(`[relay] auto re-attaching target ${wanted.id} after disconnect`);
+            sendInspect(wanted.id);
+        }
     });
 
     ws.on("error", (err) => console.error("[relay] target ws error:", err));
