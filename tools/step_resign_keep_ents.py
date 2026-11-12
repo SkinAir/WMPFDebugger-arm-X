@@ -27,9 +27,11 @@ AEX = f"{APP}/Contents/MacOS/WeChatAppEx.app"
 FW = f"{AEX}/Contents/Frameworks/WeChatAppEx Framework.framework"
 
 def ents_dir() -> str:
-    sudo_user = os.environ.get("SUDO_USER")
-    home = os.path.expanduser(f"~{sudo_user}") if sudo_user else os.path.expanduser("~")
-    return os.path.join(home, "wechat_ents")
+    """entitlements archive dir: prefer project-local backup/, fallback to ~/."""
+    proj = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "backup", "wechat_ents")
+    if os.path.isdir(proj):
+        return os.path.abspath(proj)
+    return os.path.join(os.path.expanduser("~"), "wechat_ents")
 
 def bundle_name(bundle_path: str) -> str:
     return bundle_path.replace("/Applications/", "", 1).replace("/", "_")

@@ -55,8 +55,8 @@ sudo python3 tools/step_resign_keep_ents.py
  Frida 注入（每次启动微信挂一次就行）：
 
 ```bash
-# 微信 4.2.0.17 (build 270353)
-npx ts-node src/inject.ts --script frida/270353.js
+# 微信 4.2.0.54 (build 270390)
+npx ts-node src/inject.ts --script frida/270390.js
 
 # 微信 4.1.15 (build 270102)
 npx ts-node src/inject.ts --script frida/270102_relay.js
@@ -85,13 +85,14 @@ Console / Sources / Network 都能用，可以直接跑 `wx.*`。
 
 | 微信版本 | 框架版本 | Frida 脚本 |
 |----------|----------|-----------|
+| 4.2.0.54 (270390) | 8.26154 | `frida/270390.js` |
 | 4.2.0.17 (270353) | 8.26098 | `frida/270353.js` |
 | 4.2.0.12 (270348) | 8.26062 | `frida/270348.js` |
 | 4.1.15 (270135) | 7.25800 | `frida/270135.js` |
 | 4.1.15 (270102) | 7.25755 | `frida/270102_relay.js` |
 | ≤ 4.1.13 | — | `src/index.ts --script frida/<build>.js`（旧 protobuf 模式） |
 
-> 4.2.0.17 (270353) 是当前最新版，机制与 4.2.0 一致，只有地址平移。
+> 4.2.0.54 (270390) 是当前最新版，机制与 4.2.0 一致，只有地址平移。
 > 4.2.0 里 Framework 从 `Contents/Frameworks/` 挪到了 `Contents/Resources/`，且 scene 结构体偏移变了（StructOffset 1520→1552，SceneOffset 456→480）。inject/relay 代码不受影响，只换 frida 脚本。
 
 ## 暂停微信自动更新

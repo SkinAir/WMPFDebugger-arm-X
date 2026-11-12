@@ -247,7 +247,7 @@ const triggerRemoteDebug = () => {{
         const state = handler.add(0x68).readU32();
         LOG("XWebDevToolsHandler=" + handler + " state=" + state);
         const tokenStr = makeShortStdString(LINK_TOKEN);
-        LOG("calling StartRemoteDebug(handler, \"" + LINK_TOKEN + "\", NULL) ...");
+        LOG("calling StartRemoteDebug(handler, \\\" + LINK_TOKEN + "\\\", NULL) ...");
         startRemoteDebug(handler, tokenStr, NULL);
         LOG("StartRemoteDebug returned");
     }} catch (e) {{ LOG("triggerRemoteDebug FAILED: " + e); }}
